@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<backups>
+  <environment name="FBORBA" id="aa6ddab2-4055-4f09-bfbf-d85ee082016f" lastBackup="2014-09-06T14:14:00.9274314-03:00">
+    <folders>
+      <folder id="64a2adbf-87ea-447a-8fb3-8f6cb9111f41" path="f:\internal" />
+      <folder id="ba8f6c02-e95d-4738-b806-6037a35eef77" path="f:\programs" />
+      <folder id="eb340059-28bc-48e8-b230-a1f28381e402" path="f:\util" />
+      <folder id="46f07d2a-915c-485d-a1ca-82e17664ffa7" path="f:\sefaz" />
+      <folder id="117ee9b1-2c7a-4fb2-b11c-77eff1fe75fc" path="f:\books\" />
+    </folders>
+  </environment>
+  <environment name="ESPARTA" id="1ea3ae27-f2fc-4612-8268-b38c42398d8b" lastBackup="2014-08-09T20:43:08.0831343-03:00">
+    <folders>
+      <folder id="1e03b1c9-7442-4ec1-bd5d-2b8a54609e49" path="f:\academic" />
+      <folder id="b689966d-6008-479f-8dd5-c2118363e2f9" path="f:\office" />
+      <folder id="a4e5c39a-1e6b-40c1-8381-cec2d2a5caf0" path="f:\photos" />
+      <folder id="f632be40-6068-4708-a3c9-6efdc25bd321" path="f:\programs" />
+    </folders>
+  </environment>
+</backups>

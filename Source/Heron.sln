@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heron", "Heron\Heron.csproj", "{143B737F-0799-4011-B51B-5CBE4637C89C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heron.Core", "Heron.Core\Heron.Core.csproj", "{3C117334-8C3D-4D3E-A5D1-1842CB2DEA83}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://ferhenriquef.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Heron.Core\\Heron.Core.csproj
+		SccProjectName1 = Heron.Core
+		SccLocalPath1 = Heron.Core
+		SccProjectUniqueName2 = Heron\\Heron.csproj
+		SccProjectName2 = Heron
+		SccLocalPath2 = Heron
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{143B737F-0799-4011-B51B-5CBE4637C89C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{143B737F-0799-4011-B51B-5CBE4637C89C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{143B737F-0799-4011-B51B-5CBE4637C89C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{143B737F-0799-4011-B51B-5CBE4637C89C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C117334-8C3D-4D3E-A5D1-1842CB2DEA83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C117334-8C3D-4D3E-A5D1-1842CB2DEA83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C117334-8C3D-4D3E-A5D1-1842CB2DEA83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C117334-8C3D-4D3E-A5D1-1842CB2DEA83}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
