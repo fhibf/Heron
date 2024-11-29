@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Heron.Core.Business {
+namespace Heron.Core.Business
+{
     public class FileBusiness {
 
         private BackupEnvironment _currentEnvironment;
@@ -27,9 +26,9 @@ namespace Heron.Core.Business {
             string currentDrive = Environment.CurrentDirectory.Substring(0, Environment.CurrentDirectory.IndexOf("\\") + 1);
 
             destiny = Path.Combine(currentDrive,                                   
-                                   "bkp",
-                                   this._currentEnvironment.Name,
-                                   path.Replace(":", "$"));
+                "bkp",
+                this._currentEnvironment.Name,
+                path.Replace(":", "$"));
 
             return destiny;
         }

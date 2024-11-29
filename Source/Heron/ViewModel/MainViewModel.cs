@@ -9,8 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-namespace Heron.ViewModel {
-    internal class MainViewModel : Common.NotifyPropertyChangedBase {
+namespace Heron.ViewModel
+{
+    internal class MainViewModel : NotifyPropertyChangedBase
+    {
 
         #region [ Private attributes ]
 
@@ -18,71 +20,99 @@ namespace Heron.ViewModel {
         private IIOService _ioService;
         private IMessengerService _iMessenger;
         private BackgroundWorker _worker;
-        
+
         #endregion
 
         #region [ Properties ]
 
-        public double Progress {
-            get {
-                return GetValue(() => this.Progress);
+        public double Progress
+        {
+            get
+            {
+                return GetValue(() => Progress);
             }
-            set {
-                SetValue(() => this.Progress, value);
-            }
-        }
-
-        public double MaxProgress {
-            get {
-                return GetValue(() => this.MaxProgress);
-            }
-            set {
-                SetValue(() => this.MaxProgress, value);
+            set
+            {
+                SetValue(() => Progress, value);
             }
         }
 
-        public string CurrentFileName {
-            get {
-                return GetValue(() => this.CurrentFileName);
+        public double MaxProgress
+        {
+            get
+            {
+                return GetValue(() => MaxProgress);
             }
-            set {
-                SetValue(() => this.CurrentFileName, value);
+            set
+            {
+                SetValue(() => MaxProgress, value);
             }
         }
 
-        public bool IsControlEnabled {
-            get { return GetValue(() => this.IsControlEnabled); }
-            set { SetValue(() => this.IsControlEnabled, value); }
+        public string CurrentFileName
+        {
+            get
+            {
+                return GetValue(() => CurrentFileName);
+            }
+            set
+            {
+                SetValue(() => CurrentFileName, value);
+            }
         }
 
-        public bool IsBackupEnabled {
-            get { return GetValue(() => this.IsBackupEnabled); }
-            set { SetValue(() => this.IsBackupEnabled, value); }
+        public string OutputMessage
+        {
+            get
+            {
+                return GetValue(() => OutputMessage);
+            }
+            set
+            {
+                SetValue(() => OutputMessage, value);
+            }
         }
 
-        public string MachineName {
-            get { return GetValue(() => this.MachineName); }
-            set { SetValue(() => this.MachineName, value); } 
+        public bool IsControlEnabled
+        {
+            get { return GetValue(() => IsControlEnabled); }
+            set { SetValue(() => IsControlEnabled, value); }
         }
 
-        public string LastBackup {
-            get { return GetValue(() => this.LastBackup); }
-            set { SetValue(() => this.LastBackup, value); }
+        public bool IsBackupEnabled
+        {
+            get { return GetValue(() => IsBackupEnabled); }
+            set { SetValue(() => IsBackupEnabled, value); }
         }
 
-        public string NewFolder {
-            get { return GetValue(() => this.NewFolder); }
-            set { SetValue(() => this.NewFolder, value); }
+        public string MachineName
+        {
+            get { return GetValue(() => MachineName); }
+            set { SetValue(() => MachineName, value); }
         }
 
-        public AsyncObservableCollection<Folder> Folders {
-            get { return GetValue(() => this.Folders); }
-            set { SetValue(() => this.Folders, value); }
+        public string LastBackup
+        {
+            get { return GetValue(() => LastBackup); }
+            set { SetValue(() => LastBackup, value); }
         }
 
-        public string SelectedFolder {
-            get { return GetValue(() => this.SelectedFolder); }
-            set { SetValue(() => this.SelectedFolder, value); }
+        public string NewFolder
+        {
+            get { return GetValue(() => NewFolder); }
+            set { SetValue(() => NewFolder, value); }
+        }
+
+        public AsyncObservableCollection<Folder> Folders
+        {
+            get { return GetValue(() => Folders); }
+            set { SetValue(() => Folders, value); }
+        }
+
+        public string SelectedFolder
+        {
+            get { return GetValue(() => SelectedFolder); }
+            set { SetValue(() => SelectedFolder, value); }
         }
 
         #endregion
@@ -97,24 +127,24 @@ namespace Heron.ViewModel {
 
         public ICommand OnBackup { get; set; }
 
-        public Common.DelegateCommand<Folder> OnDeleteFolder { get; set; }
+        public DelegateCommand<Folder> OnDeleteFolder { get; set; }
 
         #endregion
 
-        public MainViewModel() {
-            
-            this.OnBrowseFolders = new Common.DelegateCommand(BrowseFiles);
-            this.OnAddFolder = new Common.DelegateCommand(AddFolder);
-            this.OnSyncFiles = new Common.DelegateCommand(SyncFiles);
-            this.OnBackup = new Common.DelegateCommand(Backup);
-            this.OnDeleteFolder = new Common.DelegateCommand<Folder>(DeleteFolder);
+        public MainViewModel()
+        {
+            OnBrowseFolders = new DelegateCommand(BrowseFiles);
+            OnAddFolder = new DelegateCommand(AddFolder);
+            OnSyncFiles = new DelegateCommand(SyncFiles);
+            OnBackup = new DelegateCommand(Backup);
+            OnDeleteFolder = new DelegateCommand<Folder>(DeleteFolder);
 
-            this.IsControlEnabled = true;
+            IsControlEnabled = true;
 
-            this._ioService = new Common.WindowsIoService();
-            this._iMessenger = new Common.WindowsMessenger();
+            _ioService = new WindowsIoService();
+            _iMessenger = new WindowsMessenger();
 
-            this.Folders = new AsyncObservableCollection<Folder>();
+            Folders = new AsyncObservableCollection<Folder>();
 
             Initialize();
 
@@ -123,9 +153,9 @@ namespace Heron.ViewModel {
             _worker = new BackgroundWorker();
             _worker.DoWork += DoBackgroundWork;
         }
-        
-        public void Initialize() {
 
+        public void Initialize()
+        {
             var environment = GetCurrentEnvironment();
 
             if (environment == null)
@@ -136,83 +166,86 @@ namespace Heron.ViewModel {
             UpdateEnvironmentDetails();
         }
 
-        private void UpdateEnvironmentDetails() {
-                        
-            this.MachineName = this._environment.Name;
+        private void UpdateEnvironmentDetails()
+        {
+            MachineName = _environment.Name;
 
-            foreach (var iFolder in this._environment.Folders) {
+            foreach (var iFolder in _environment.Folders)
+            {
 
                 AddNewFolder(iFolder.Path);
             }
 
-            if (this._environment.LastBackup.HasValue && this._environment.LastBackup.Value > DateTime.MinValue) {
+            if (_environment.LastBackup.HasValue && _environment.LastBackup.Value > DateTime.MinValue)
+            {
 
-                this.LastBackup = this._environment.LastBackup.Value.ToShortDateString() + " " + 
-                                  this._environment.LastBackup.Value.ToShortTimeString();
+                LastBackup = _environment.LastBackup.Value.ToShortDateString() + " " +
+                                  _environment.LastBackup.Value.ToShortTimeString();
             }
-            else{
+            else
+            {
 
-                this.LastBackup = "Without backups until now.";
+                LastBackup = "Without backups until now.";
             }
         }
 
-        public void DeleteFolder(Folder folder) {
-            
-            if (!this.Folders.Contains(folder))
+        public void DeleteFolder(Folder folder)
+        {
+            if (!Folders.Contains(folder))
                 return;
 
-            this.Folders.Remove(folder);
+            Folders.Remove(folder);
 
             DisableBackup();
         }
 
-        public void SetEnvironmentDetails(BackupEnvironment environment) {
-
-            this._environment = environment;
+        public void SetEnvironmentDetails(BackupEnvironment environment)
+        {
+            _environment = environment;
         }
 
-        public BackupEnvironment GetCurrentEnvironment() {
-
+        public BackupEnvironment GetCurrentEnvironment()
+        {
             var business = new EnvironmentBusiness();
 
             return business.GetCurrentBackupEnvironment();
         }
 
-        private void BrowseFiles() {
-
-            string folder = this._ioService.GetFolderPath();
+        private void BrowseFiles()
+        {
+            string folder = _ioService.GetFolderPath();
 
             if (string.IsNullOrWhiteSpace(folder))
                 return;
 
-            this.NewFolder = folder;
+            NewFolder = folder;
         }
 
-        private void AddFolder() {
-
-            if (string.IsNullOrWhiteSpace(this.NewFolder))
+        private void AddFolder()
+        {
+            if (string.IsNullOrWhiteSpace(NewFolder))
                 return;
 
-            if (!this._ioService.FolderExists(this.NewFolder))
+            if (!_ioService.FolderExists(NewFolder))
                 return;
 
-            AddNewFolder(this.NewFolder);
+            AddNewFolder(NewFolder);
 
-            this.NewFolder = string.Empty;
+            NewFolder = string.Empty;
 
             DisableBackup();
         }
 
-        private void AddNewFolder(string folder) {
-
+        private void AddNewFolder(string folder)
+        {
             folder = folder.ToLower();
 
-            if (!this.Folders.Any(f => string.Compare(f.Path, folder, StringComparison.CurrentCultureIgnoreCase) == 0))
-                this.Folders.Add(new Folder(Guid.NewGuid(), folder));
+            if (!Folders.Any(f => string.Compare(f.Path, folder, StringComparison.CurrentCultureIgnoreCase) == 0))
+                Folders.Add(new Folder(Guid.NewGuid(), folder));
         }
 
-        private void SyncFiles() {
-
+        private void SyncFiles()
+        {
             UpdateFoldersOfBackupEnvironmentReference();
 
             SaveBackupEnvironment();
@@ -222,63 +255,92 @@ namespace Heron.ViewModel {
             EnableBackup();
         }
 
-        private void Backup() {
+        private void Backup()
+        {
+            try
+            {
+                Progress = 0;
+                OutputMessage = string.Empty;
 
-            StartBackupProgress();
+                IsBackupEnabled = false;
 
-            StartBackup();
+                StartBackupProgress();
+
+                StartBackup();
+            }
+            finally
+            {
+                IsBackupEnabled = true;
+            }
         }
 
-        private void StartBackupProgress() {
+        private void StartBackupProgress()
+        {
+            FileBusiness business = new FileBusiness(_environment);
 
-            FileBusiness business = new FileBusiness(this._environment);
-
-            this.MaxProgress = business.GetTotalFiles();
+            MaxProgress = business.GetTotalFiles();
         }
 
-        private void StartBackup() {
-            
+        private void StartBackup()
+        {
             if (!_worker.IsBusy)
+            {
                 _worker.RunWorkerAsync();
+            }
         }
 
-        private void DoBackgroundWork(object sender, DoWorkEventArgs e) {
+        private void DoBackgroundWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                IsControlEnabled = false;
 
-            this.IsControlEnabled = false;
+                FileBusiness business = new FileBusiness(_environment);
 
-            FileBusiness business = new FileBusiness(this._environment);
+                business.OnFileBackuped += OnFileBackuped;
 
-            business.OnFileBackuped += OnFileBackuped;
+                business.Backup();
 
-            business.Backup();
+                UpdateEnvironmentDetails();
 
-            UpdateEnvironmentDetails();
+                _iMessenger.ShowInformation("Backup completed.");
 
-            _iMessenger.ShowInformation("Backup completed.");
-
-            HideFileInProgress();
+                HideFileInProgress();
+            }
+            catch (Exception ex)
+            {
+                OutputMessage = ex.Message;
+            }
+            finally
+            {
+                IsControlEnabled = true;
+            }
         }
 
-        private void HideFileInProgress() {
-
-            this.Progress = 0;
-            this.CurrentFileName = string.Empty;
-            this.IsControlEnabled = true;
-            this.IsBackupEnabled = false;
+        private void HideFileInProgress()
+        {
+            Progress = 0;
+            CurrentFileName = string.Empty;
+            IsControlEnabled = true;
+            IsBackupEnabled = false;
         }
 
-        private void OnFileBackuped(object sender, FileCopyEventArgs e) {
-
-            this.Progress += (1.0 / this.MaxProgress);
-            this.CurrentFileName = e.FileName; // FormatFileName(e);
+        private void OnFileBackuped(object sender, FileCopyEventArgs e)
+        {
+            Progress += (1.0 / MaxProgress);
+            CurrentFileName = e.FileName;
         }
 
-        private string FormatFileName(FileCopyEventArgs e) {
-
+        private string FormatFileName(FileCopyEventArgs e)
+        {
             if (string.IsNullOrEmpty(e.FileName))
+            {
                 return string.Empty;
+            }
             if (e.FileName.Length <= 60)
+            {
                 return e.FileName;
+            }
 
             var returnValue = new StringBuilder();
 
@@ -294,23 +356,25 @@ namespace Heron.ViewModel {
             return returnValue.ToString();
         }
 
-        private void DisableBackup(){
+        private void DisableBackup()
+        {
 
-            this.IsBackupEnabled = false;
+            IsBackupEnabled = false;
         }
 
-        private void EnableBackup() {
-
-            this.IsBackupEnabled = true;
+        private void EnableBackup()
+        {
+            IsBackupEnabled = true;
         }
 
-        private bool AreFoldersValid() {
-
-            FileBusiness business = new FileBusiness(this._environment);
+        private bool AreFoldersValid()
+        {
+            FileBusiness business = new FileBusiness(_environment);
 
             var validationResult = business.ValidateFolders();
 
-            if (validationResult == null) {
+            if (validationResult == null)
+            {
                 return true;
             }
 
@@ -318,30 +382,30 @@ namespace Heron.ViewModel {
             return false;
         }
 
-        private void CompareFiles() {
-
-            FileBusiness business = new FileBusiness(this._environment);
+        private void CompareFiles()
+        {
+            FileBusiness business = new FileBusiness(_environment);
 
             IEnumerable<ComparisonResult> result = business.CompareFiles();
         }
 
-        private void SaveBackupEnvironment() {
-
+        private void SaveBackupEnvironment()
+        {
             EnvironmentBusiness business = new EnvironmentBusiness();
 
-            business.SaveEnvironmentFolders(this._environment);
+            business.SaveEnvironmentFolders(_environment);
         }
 
-        private void UpdateFoldersOfBackupEnvironmentReference(){
-
-            if (this._environment.Folders == null)
-                this._environment.Folders = new Collection<Folder>();
+        private void UpdateFoldersOfBackupEnvironmentReference()
+        {
+            if (_environment.Folders == null)
+                _environment.Folders = new Collection<Folder>();
             else
-                this._environment.Folders.Clear();
-            
-            foreach (var iFolder in this.Folders) {
+                _environment.Folders.Clear();
 
-                this._environment.Folders.Add(iFolder);
+            foreach (var iFolder in Folders)
+            {
+                _environment.Folders.Add(iFolder);
             }
         }
     }
